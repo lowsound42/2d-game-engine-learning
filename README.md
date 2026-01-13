@@ -7,16 +7,16 @@ This initial commit is what the course starts with:
 ```
 root
 |-assets (all this stuff is pretty self explanatory)
-    |-fonts
-    |-images
-    |-scripts
-    |-sounds
-    |-tilemaps
+|---fonts
+|---images
+|---scripts
+|---sounds
+|---tilemaps
 |-libs
-    |-glm (math)
-    |-imgui (debugging gui)
-    |-lua (lua)
-    |-sol (binds lua in C++)
+|---glm (math)
+|---imgui (debugging gui)
+|---lua (lua)
+|---sol (binds lua in C++)
 |-src (will include our source code)
 |-Makefile (builds)
 |-Readme 
