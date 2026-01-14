@@ -1,19 +1,16 @@
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#include <sol/sol.hpp>
-#include <glm/glm.hpp>
-#include <imgui/imgui.h>
+#include "Game.h"
 
-int main()
+/*
+    Adding the arg params but they aren't
+    really necessary right now (or maybe ever)
+*/
+int main(int argc, char *argv[])
 {
-    sol::state lua;
-    lua.open_libraries(sol::lib::base);
-    SDL_Init(SDL_INIT_EVERYTHING);
-
-    glm::vec2 velocity = glm::vec2(5.0, -2.0);
+    Game game;
+    game.Initialize();
+    game.Run();
+    game.Destroy();
 
     return 0;
 }
