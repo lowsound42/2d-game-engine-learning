@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Logger.h"
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -6,19 +7,20 @@
 
 Game::Game()
 {
-    std::cout << "Game Constructor Called" << "\n";
+    isRunning_ = false;
+    Logger::Log("Game Constructor called");
 };
 
 Game::~Game()
 {
-    std::cout << "Game Destructor Called" << "\n";
+    Logger::Log("Game Destructor Called");
 };
 
 void Game::Initialize()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
-        std::cerr << "Error initializing SDL" << "\n";
+        Logger::Err("Error initializing SDL");
         return;
     }
 
@@ -36,13 +38,13 @@ void Game::Initialize()
         SDL_WINDOW_RESIZABLE);
     if (!window_)
     {
-        std::cerr << "Window failed to initialize" << "\n";
+        Logger::Err("Window failed to initialize");
         return;
     }
     renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer_)
     {
-        std::cerr << "Renderer failed to initialize" << "\n";
+        Logger::Err("Renderer failed to initialize");
         return;
     }
     SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN);
@@ -86,18 +88,22 @@ glm::vec2 playerVelocity;
 void Game::Setup()
 {
     playerPosition = glm::vec2(10.0, 20.0);
-    playerVelocity = glm::vec2(1.0, 0.0);
+    playerVelocity = glm::vec2(60.0, 5.0);
 }
 
 void Game::Update()
 {
-    // if we are too fast, lock execution till MILLISECONDS_PER_FRAME;
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), milliSecondsPreviousFrame_ + MILLISECONDS_PER_FRAME))
-        ;
+    int timeToWait = MILLISECONDS_PER_FRAME - (SDL_GetTicks() - milliSecondsPreviousFrame_);
+    if (timeToWait > 0 && timeToWait <= MILLISECONDS_PER_FRAME)
+        SDL_Delay(timeToWait);
+
+    // difference in ticks since the last frame in seconds
+    double deltaTime = (SDL_GetTicks() - milliSecondsPreviousFrame_) / 1000.0f;
     // store the current game time
     milliSecondsPreviousFrame_ = SDL_GetTicks();
-    playerPosition.x += playerVelocity.x;
-    playerPosition.y += playerVelocity.y;
+
+    playerPosition.x += playerVelocity.x * deltaTime;
+    playerPosition.y += playerVelocity.y * deltaTime;
 };
 
 void Game::Render()
