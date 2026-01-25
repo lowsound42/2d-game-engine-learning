@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Game.h"
+#include "Game/Game.h"
 
 /*
     Adding the arg params but they aren't
